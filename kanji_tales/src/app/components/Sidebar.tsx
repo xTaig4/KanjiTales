@@ -69,45 +69,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Desktop sidebar (always visible) + mobile slide panel */}
       <nav
         id="app-sidebar"
-        className={`group fixed md:static left-0 top-0 z-50 md:z-auto h-full md:h-auto flex flex-col border-r border-foreground/15 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 w-52 md:w-16 transition-transform duration-300 will-change-transform ${
+        className={`group fixed md:static left-0 top-0 z-50 md:z-auto h-full md:h-auto flex flex-col border-r border-foreground/15 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 w-52 transition-transform duration-300 will-change-transform ${
           open ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
-        <div className="flex items-center gap-2 p-4 md:justify-center">
+        <div className="flex items-center gap-2 p-4 ">
           <span className="text-lg font-semibold select-none">KT</span>
         </div>
-        <ul className="flex-1 flex flex-col gap-2 px-2 md:px-0">
+        <ul className="flex-1 flex flex-col gap-2 px-2 ">
           {nav.map((item) => (
             <li key={item.href}>
               <Link
                 href={item.href}
                 onClick={close}
-                className="group/item flex items-center gap-3 rounded-md p-2 md:justify-center text-sm font-medium text-foreground/80 hover:bg-foreground/10 hover:text-foreground transition-colors"
+                className="group/item flex items-center gap-3 rounded-md p-2 text-sm font-medium text-foreground/80 hover:bg-foreground/10 hover:text-foreground transition-colors"
               >
                 {/* Icon placeholder */}
                 <span className="flex h-8 w-8 items-center justify-center rounded-md bg-foreground/10 text-xs font-bold">
                   {item.icon}
                 </span>
-                <span className="md:hidden truncate">{item.label}</span>
+                <span className="truncate">{item.label}</span>
               </Link>
             </li>
           ))}
         </ul>
-        <div className="p-3 mt-auto md:p-2 md:justify-center flex flex-col gap-2">
-          <button
-            onClick={() => alert("Settings placeholder")}
-            className="flex items-center gap-3 rounded-md p-2 md:justify-center text-xs text-foreground/70 hover:bg-foreground/10 hover:text-foreground"
-          >
-            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-foreground/10 text-[10px] font-bold">
-              S
-            </span>
-            <span className="md:hidden lg:inline-block truncate">Settings</span>
-          </button>
-        </div>
       </nav>
-
-      {/* Spacer to offset fixed sidebar on desktop so content not under it */}
-      <div className="hidden md:block w-16 shrink-0" aria-hidden="true" />
     </>
   );
 };

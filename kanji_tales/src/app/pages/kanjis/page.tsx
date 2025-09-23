@@ -42,16 +42,16 @@ const KanjisPage = () => {
 
   return (
     <div>
-      <section className="text-black flex flex-col items-center justify-center mt-4 gap-4">
+      <section className="text-black flex items-center flex-col gap-4">
         <div className="text-center">
-          <h2 className="text-2xl font-bold ">Kanji Characters</h2>
-          <p className=" flex justify-center p-3">
+          <h2 className="text-2xl font-bold">Kanji Characters</h2>
+          <p className="p-3">
             This is the Kanji you've learned so far, Goshujin-sama~!😍
           </p>
         </div>
-        <div className="grid grid-cols-9 gap-4 mt-4">
+        <div className="grid grid-cols-5 md:grid-cols-9 gap-4 mt-4">
           {displayedList.length === 0 ? (
-            <p className="col-span-9 text-center ">
+            <p className="col-span-9">
               {showMarked ? "No marked kanji yet." : "No kanji available."}
             </p>
           ) : (
@@ -59,13 +59,13 @@ const KanjisPage = () => {
               <div
                 key={index}
                 onClick={() => handleKanjiClick(character)}
-                className={`p-4 rounded-lg ring-1 ring-gray-300 shadow-md text-center items-center justify-center transition-colors duration-300 cursor-pointer ${
+                className={`p-4 rounded-lg ring-1 ring-gray-300 shadow-md transition-colors duration-300 cursor-pointer ${
                   markedKanji.includes(character)
                     ? "bg-red-300"
                     : "bg-white hover:bg-gray-700/90"
                 }`}
               >
-                <p className="text-3xl ">{character}</p>
+                <p className="text-3xl">{character}</p>
               </div>
             ))
           )}

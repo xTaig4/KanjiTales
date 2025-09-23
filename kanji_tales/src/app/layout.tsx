@@ -24,16 +24,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-dvh flex`}
-      >
+    <html lang="en" className="w-full h-full">
+      <body className="w-full h-full m-0 p-0">
         {/* Sidebar + main content */}
-        <div className="flex w-full">
+        <div className="flex min-h-screen w-full">
           {/* Nav rail / sidebar */}
           {/* Using dynamic import not needed yet; simple direct import */}
           <Sidebar />
-          {children}
+          {/* Main content area - takes remaining width and centers content */}
+          <main className="flex-1 flex items-center justify-center">
+            {children}
+          </main>
         </div>
       </body>
     </html>
