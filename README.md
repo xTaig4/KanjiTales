@@ -5,7 +5,7 @@ Kanji Tales use AI from Google Gemini api to generate stories/sentence with or w
 
 ## Demo
 
-![KanjiTales Demo](./kanji_tales/public/kanji_tales-demo.gif)
+![KanjiTales Demo](./kanji_tales/public/kanji_tales-demo1.gif)
 
 ## Features (current or planned)
 
