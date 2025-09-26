@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
+import KanjiSearch from "../../components/KanjiSearch";
 
 const KanjisPage = () => {
   const kanji_list: string[] = [
@@ -29,6 +30,7 @@ const KanjisPage = () => {
 
   const [markedKanji, setMarkedKanji] = useState<string[]>([]);
   const [showMarked, setShowMarked] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(true);
 
   const handleKanjiClick = (character: string) => {
     setMarkedKanji((prev) =>
@@ -38,13 +40,28 @@ const KanjisPage = () => {
     );
   };
 
+  useEffect(() => {
+    if (markedKanji.length === 0) {
+      setIsEmpty(true);
+    } else {
+      setIsEmpty(false);
+    }
+  }, [markedKanji]);
+
   const displayedList = showMarked ? markedKanji : kanji_list;
 
   return (
-    <div>
+    <div className="w-full ">
+      {/* Kanji Search Dictionary */}
+      <KanjiSearch />
+
+      {/* Divider */}
+      <div className="border-t border-gray-200 my-6"></div>
+
+      {/* Existing Kanji Learning Section */}
       <section className="text-black flex items-center flex-col gap-4">
         <div className="text-center">
-          <h2 className="text-2xl font-bold">Kanji Characters</h2>
+          <h2 className="text-2xl font-bold">Your Learned Kanji</h2>
           <p className="p-3">
             This is the Kanji you've learned so far, Goshujin-sama~!😍
           </p>
@@ -62,7 +79,7 @@ const KanjisPage = () => {
                 className={`p-4 rounded-lg ring-1 ring-gray-300 shadow-md transition-colors duration-300 cursor-pointer ${
                   markedKanji.includes(character)
                     ? "bg-red-300"
-                    : "bg-white hover:bg-gray-700/90"
+                    : "bg-white hover:bg-gray-200/90"
                 }`}
               >
                 <p className="text-3xl">{character}</p>
@@ -70,8 +87,10 @@ const KanjisPage = () => {
             ))
           )}
         </div>
+        {}
         <button
-          className="border-1 border-gray-200 shadow-md rounded-2xl p-2 hover:bg-red-300"
+          disabled={isEmpty}
+          className="border-1 border-gray-200 rounded-lg p-3 bg-blue-500 text-white  hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={() => setShowMarked((prev) => !prev)}
         >
           {showMarked ? "Show All Kanji" : "Show Marked Kanji"}
