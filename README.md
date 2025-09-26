@@ -3,6 +3,10 @@
 A simple webapp where users can add kanji they have learned and generate short stories or sentences to reinforce their learning. 
 Kanji Tales use AI from Google Gemini api to generate stories/sentence with or without the kanji of choice. 
 
+## Demo
+
+![KanjiTales Demo](./kanji_tales/public/kanji_tales-demo.gif)
+
 ## Features (current or planned)
 
 - **Kanji Collection**: Add and manage kanji characters you've learned
