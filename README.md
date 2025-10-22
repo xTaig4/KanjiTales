@@ -16,9 +16,9 @@ Kanji Tales use AI from Google Gemini api to generate stories/sentence with or w
 
 ## Tech Stack
 
-- **TypeScript** (90.5%) - Main application logic and type safety
-- **JavaScript** (5%) - Additional scripting and utilities
-- **CSS** (4.5%) - Styling and responsive design
+- **NextJS**
+- **TypeScript** 
+- **Tailwind CSS** 
 
 ## Getting Started
 
@@ -40,10 +40,16 @@ cd KanjiTales
 npm install
 ```
 
-3. Start the development server:
+
+3. Create ".env.local" file and add google gemini api key or similiar ai in the file
+```bash
+NEXT_PUBLIC_GEMINI_API_KEY=your_key_here
+```
+
+5. Start the development server:
 ```bash
 npm start
 ```
 
-4. Open your browser and navigate to `http://localhost:3000`
+5. Open your browser and navigate to `http://localhost:3000`
 
