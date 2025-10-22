@@ -51,5 +51,5 @@ NEXT_PUBLIC_GEMINI_API_KEY=your_key_here
 npm start
 ```
 
-5. Open your browser and navigate to `http://localhost:3000`
+6. Open your browser and navigate to `http://localhost:3000`
 
