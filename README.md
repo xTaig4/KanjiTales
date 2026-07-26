@@ -4,6 +4,8 @@ Tiny Japanese stories you can actually read — generated from the kanji and voc
 
 The page is the stage: sumi ink on washi paper, a rough-stamped mincho masthead, red hanko seals, and stories that enter sentence by sentence like a performance.
 
+![KanjiTales — a generated story with furigana, the 検 kanji-check seal, and the cast list](./kanji_tales/public/kanjitales-demo.png)
+
 ## How it works
 
 1. **Sync** — pulls your started kanji/vocab from the WaniKani API v2 (`/assignments` + `/subjects`).
