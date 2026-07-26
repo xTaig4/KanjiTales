@@ -17,6 +17,8 @@ Difficulty modes: やさしい (Guru+ items only) / ふつう (everything starte
 
 Every story is saved automatically. **過去公演** (`/archive`) is the programme of past performances — reopen any story for an encore reading. Stories live as JSON files in `kanji_tales/data/stories/` (gitignored).
 
+![過去公演 — the archive programme listing past stories with date, difficulty, and kanji count](./kanji_tales/public/kanjitales-archive.png)
+
 ## Requirements
 
 - Node.js 20+ (and [Bun](https://bun.sh) for the test scripts)
