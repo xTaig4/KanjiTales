@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateStory, Difficulty } from "@/lib/story";
+import { saveStory } from "@/lib/archive";
 
 // Generation shells out to `claude -p` and can take a minute with retries.
 export const maxDuration = 300;
@@ -17,7 +18,8 @@ export async function POST(request: NextRequest) {
 
   try {
     const story = await generateStory(difficulty);
-    return NextResponse.json(story);
+    const archived = await saveStory({ ...story, difficulty });
+    return NextResponse.json(archived);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     return NextResponse.json({ error: message }, { status: 500 });

@@ -168,18 +168,24 @@ button.kt-button:disabled {
 }
 
 /* ---- links: ink underline, red on hover ---- */
-main a,
-footer a,
+main a:not(.kt-plain),
+footer a:not(.kt-plain),
 main button.kt-link {
   color: var(--ink);
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 2px;
 }
-main a:hover,
-footer a:hover,
+main a:not(.kt-plain):hover,
+footer a:not(.kt-plain):hover,
 main button.kt-link:hover {
   color: var(--voice-red);
+}
+
+/* programme entries and other quiet links opt out of the underline voice */
+a.kt-plain {
+  color: var(--ink);
+  text-decoration: none;
 }
 
 button.kt-link {

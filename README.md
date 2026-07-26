@@ -15,6 +15,8 @@ The page is the stage: sumi ink on washi paper, a rough-stamped mincho masthead,
 
 Difficulty modes: やさしい (Guru+ items only) / ふつう (everything started) / きたえる (drills your newest items).
 
+Every story is saved automatically. **過去公演** (`/archive`) is the programme of past performances — reopen any story for an encore reading. Stories live as JSON files in `kanji_tales/data/stories/` (gitignored).
+
 ## Requirements
 
 - Node.js 20+ (and [Bun](https://bun.sh) for the test scripts)
