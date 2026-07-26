@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-26T00:00:00Z",
+  "title": "Design System: KanjiTales",
+  "extensions": {
+    "colorMeta": {
+      "voice-red": { "role": "primary", "displayName": "Vermilion Seal Red", "canonical": "#d7332a", "tonalRamp": ["oklch(15% 0.19 28)", "oklch(25% 0.19 28)", "oklch(35% 0.19 28)", "oklch(45% 0.19 28)", "oklch(56% 0.19 28)", "oklch(66% 0.19 28)", "oklch(80% 0.12 28)", "oklch(95% 0.04 28)"] },
+      "voice-red-deep": { "role": "primary", "displayName": "Dried Seal Red", "canonical": "#a3231c", "tonalRamp": ["oklch(15% 0.17 28)", "oklch(25% 0.17 28)", "oklch(35% 0.17 28)", "oklch(46% 0.17 28)", "oklch(58% 0.17 28)", "oklch(68% 0.14 28)", "oklch(82% 0.09 28)", "oklch(95% 0.03 28)"] },
+      "paper": { "role": "neutral", "displayName": "Washi Paper", "canonical": "#faf9f5", "tonalRamp": ["oklch(15% 0.005 95)", "oklch(28% 0.005 95)", "oklch(41% 0.005 95)", "oklch(54% 0.005 95)", "oklch(67% 0.005 95)", "oklch(80% 0.005 95)", "oklch(90% 0.005 95)", "oklch(98% 0.005 95)"] },
+      "ink": { "role": "neutral", "displayName": "Sumi Ink", "canonical": "#111110", "tonalRamp": ["oklch(17% 0.004 95)", "oklch(28% 0.004 95)", "oklch(40% 0.004 95)", "oklch(52% 0.004 95)", "oklch(64% 0.004 95)", "oklch(76% 0.004 95)", "oklch(87% 0.004 95)", "oklch(96% 0.004 95)"] },
+      "ink-soft": { "role": "neutral", "displayName": "Faded Ink", "canonical": "#55524b", "tonalRamp": ["oklch(15% 0.012 95)", "oklch(26% 0.012 95)", "oklch(37% 0.012 95)", "oklch(43% 0.012 95)", "oklch(56% 0.012 95)", "oklch(69% 0.012 95)", "oklch(82% 0.012 95)", "oklch(95% 0.012 95)"] },
+      "gray-20": { "role": "neutral", "displayName": "Hairline Gray", "canonical": "#e8e6df", "tonalRamp": ["oklch(15% 0.008 95)", "oklch(28% 0.008 95)", "oklch(41% 0.008 95)", "oklch(54% 0.008 95)", "oklch(67% 0.008 95)", "oklch(80% 0.008 95)", "oklch(92% 0.008 95)", "oklch(97% 0.008 95)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display (Performing Mincho)", "purpose": "Masthead, story title, stats, cast words, difficulty options, stamps, button label. Weight 800 for headings; roughened via #kt-rough-ink and tilted -1 to -4deg only at masthead/title/stamp scale." },
+      "story": { "displayName": "Story", "purpose": "The generated tale itself — largest sustained text, weight 600, line-height 2.4, never filtered, rotated, or animated after its entrance." },
+      "caption": { "displayName": "Typewriter Caption", "purpose": "Stage directions, hints, sync status, footer — the stage manager's voice, always faded ink." },
+      "tag": { "displayName": "Name Tag", "purpose": "Typed labels over a hard 2px ink underline: LEVEL, 漢字 KANJI, むずかしさ, 出演 CAST. Border and text turn vermilion/dried-red for errors." },
+      "body": { "displayName": "Body", "purpose": "Plain reading text — the English translation (max 65ch) and error messages." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "ease-curtain", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Entrance easing for story lines (kt-enter): rise 0.35em out of a 3px blur." },
+      { "name": "duration-line-enter", "value": "600ms", "purpose": "One story sentence entering the stage." },
+      { "name": "stagger-line", "value": "450ms", "purpose": "Per-sentence delay (calc(var(--line) * 450ms)) — the theatrical beat between lines." },
+      { "name": "duration-direction", "value": "500ms ease-out", "purpose": "A typed stage direction appearing during generation." },
+      { "name": "duration-drift", "value": "2600ms ease-in-out infinite alternate", "purpose": "Waiting kana falter (kt-drift): rise ~0.3em, rotate 4deg+, opacity 0.35→0.9; -400ms stagger per glyph; the only looping motion in the system." },
+      { "name": "reduced-motion", "value": "prefers-reduced-motion: reduce → entrances 0.01ms with 0ms delay, kt-drift removed", "purpose": "All theatrics collapse to instant; content and order unchanged." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px", "purpose": "Masthead 6rem, story title 3rem, cast list two columns, horizontal padding 32px." }
+    ],
+    "textures": [
+      { "name": "washi-grain", "value": "inline SVG feTurbulence fractalNoise baseFrequency 0.9, 2 octaves, 140px tile, ~3.5% alpha, on html background over #faf9f5", "purpose": "Uncoated-paper ground; the page must never read as flat white pixels." },
+      { "name": "rough-ink-filter", "value": "SVG filter #kt-rough-ink: feTurbulence fractalNoise baseFrequency 0.55, 2 octaves, seed 7 → feDisplacementMap scale 2.6 (defined once in layout.tsx)", "purpose": "The single source of distress: masthead, story title, hanko stamps, and the active-pressed button." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one action on the stage: a block of set ink that speaks vermilion on hover and presses rough on active.",
+      "html": "<svg aria-hidden=\"true\" width=\"0\" height=\"0\" style=\"position:absolute\"><filter id=\"ds-rough-ink-btn\" x=\"-5%\" y=\"-5%\" width=\"110%\" height=\"110%\"><feTurbulence type=\"fractalNoise\" baseFrequency=\"0.55\" numOctaves=\"2\" seed=\"7\" result=\"noise\"/><feDisplacementMap in=\"SourceGraphic\" in2=\"noise\" scale=\"2.6\" xChannelSelector=\"R\" yChannelSelector=\"G\"/></filter></svg><button class=\"ds-btn-primary\">上演する</button>",
+      "css": ".ds-btn-primary { font-family: 'Shippori Mincho B1', 'Hiragino Mincho ProN', serif; font-weight: 700; font-size: 1.15rem; letter-spacing: 0.35em; padding: 0.55em 1.6em 0.55em 1.95em; color: #faf9f5; background: #111110; border: 2px solid #111110; border-radius: 0; cursor: pointer; } .ds-btn-primary:hover:not(:disabled) { background: #d7332a; border-color: #a3231c; } .ds-btn-primary:active:not(:disabled) { filter: url(#ds-rough-ink-btn); } .ds-btn-primary:disabled { background: #55524b; border-color: #55524b; } .ds-btn-primary:focus-visible { outline: 3px solid #d7332a; outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Link Button",
+      "kind": "button",
+      "refersTo": "kt-link",
+      "description": "Chromeless toggle (ふりがな, 字幕): ink underline at rest, vermilion on hover.",
+      "html": "<button class=\"ds-link\">字幕 ── show translation</button>",
+      "css": ".ds-link { font-family: 'Courier New', 'Zen Kaku Gothic New', monospace; font-size: 0.85rem; color: #111110; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 2px; } .ds-link:hover { color: #d7332a; } .ds-link:focus-visible { outline: 3px solid #d7332a; outline-offset: 2px; }"
+    },
+    {
+      "name": "Ink Radio",
+      "kind": "input",
+      "refersTo": "kt-radio",
+      "description": "The only form control: a 2px ink ring that fills with a radial ink target when cast; the chosen label answers with a 3px underline.",
+      "html": "<label class=\"ds-radio-row\"><input type=\"radio\" name=\"ds-difficulty\" class=\"ds-radio\" checked/><span class=\"ds-radio-word ds-radio-word--chosen\">ふつう</span><span class=\"ds-radio-caption\">everything started</span></label><label class=\"ds-radio-row\"><input type=\"radio\" name=\"ds-difficulty\" class=\"ds-radio\"/><span class=\"ds-radio-word\">きたえる</span><span class=\"ds-radio-caption\">drill newest items</span></label>",
+      "css": ".ds-radio-row { display: inline-flex; align-items: baseline; gap: 8px; margin-right: 28px; cursor: pointer; font-size: 1rem; } .ds-radio { appearance: none; -webkit-appearance: none; width: 1em; height: 1em; border: 2px solid #111110; border-radius: 50%; display: inline-block; vertical-align: baseline; transform: translateY(0.12em); cursor: pointer; margin: 0; } .ds-radio:checked { background: radial-gradient(circle, #111110 0 38%, #faf9f5 42% 55%, #111110 60% 100%); } .ds-radio:focus-visible { outline: 3px solid #d7332a; outline-offset: 2px; } .ds-radio-word { font-family: 'Shippori Mincho B1', 'Hiragino Mincho ProN', serif; font-weight: 800; font-size: 1.125rem; color: #111110; } .ds-radio-word--chosen { text-decoration: underline; text-decoration-color: #111110; text-decoration-thickness: 3px; text-underline-offset: 4px; } .ds-radio-caption { font-family: 'Courier New', monospace; font-size: 0.8rem; letter-spacing: 0.02em; color: #55524b; }"
+    },
+    {
+      "name": "Name Tag",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Typed label pinned above a hard ink underline; the error variant turns its line vermilion.",
+      "html": "<span class=\"ds-tag\">漢字 KANJI</span> <span class=\"ds-tag ds-tag--error\">上演中止 / an error occurred</span>",
+      "css": ".ds-tag { display: inline-block; font-family: 'Courier New', 'Zen Kaku Gothic New', monospace; font-size: 0.75rem; letter-spacing: 0.12em; color: #111110; border-bottom: 2px solid #111110; padding-bottom: 2px; margin-right: 16px; } .ds-tag--error { border-bottom-color: #d7332a; color: #a3231c; }"
+    },
+    {
+      "name": "Hanko Stamp",
+      "kind": "custom",
+      "refersTo": "stamp",
+      "description": "Vermilion seal pressed at -4deg through the rough-ink filter; state as certification (新作 new story, 検 kanji check passed), never interactive.",
+      "html": "<svg aria-hidden=\"true\" width=\"0\" height=\"0\" style=\"position:absolute\"><filter id=\"ds-rough-ink-stamp\" x=\"-5%\" y=\"-5%\" width=\"110%\" height=\"110%\"><feTurbulence type=\"fractalNoise\" baseFrequency=\"0.55\" numOctaves=\"2\" seed=\"7\" result=\"noise\"/><feDisplacementMap in=\"SourceGraphic\" in2=\"noise\" scale=\"2.6\" xChannelSelector=\"R\" yChannelSelector=\"G\"/></filter></svg><span class=\"ds-stamp\">検</span>",
+      "css": ".ds-stamp { display: inline-block; font-family: 'Shippori Mincho B1', 'Hiragino Mincho ProN', serif; font-weight: 700; font-size: 1.5rem; color: #d7332a; border: 3px solid #d7332a; line-height: 1; padding: 0.3em 0.32em; transform: rotate(-4deg); filter: url(#ds-rough-ink-stamp); }"
+    },
+    {
+      "name": "Hairline Rules",
+      "kind": "custom",
+      "refersTo": "kt-rule",
+      "description": "All structure is drawn with lines, never boxes: 2px ink proscenium rule, 1px hairline-gray closing rule.",
+      "html": "<hr class=\"ds-rule\"/><hr class=\"ds-rule ds-rule--thin\"/>",
+      "css": ".ds-rule { border: 0; border-top: 2px solid #111110; margin: 16px 0; } .ds-rule--thin { border-top-width: 1px; border-top-color: #e8e6df; }"
+    },
+    {
+      "name": "Story Line Entrance",
+      "kind": "custom",
+      "refersTo": "kt-line",
+      "description": "Signature motion: story sentences enter as blocks in reading order, 450ms apart, rising out of a 3px blur on the curtain easing; instant under reduced motion.",
+      "html": "<div class=\"ds-story\" lang=\"ja\"><span class=\"ds-story-line\" style=\"--line:0\">山の上に、犬がいました。</span><span class=\"ds-story-line\" style=\"--line:1\">犬は川を見ました。</span><span class=\"ds-story-line\" style=\"--line:2\">「大きい水だ！」</span></div>",
+      "css": ".ds-story { font-family: 'Shippori Mincho B1', 'Hiragino Mincho ProN', serif; font-weight: 600; font-size: 1.7rem; line-height: 2.4; letter-spacing: 0.03em; color: #111110; } .ds-story-line { display: block; animation: ds-enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: calc(var(--line) * 450ms); } @keyframes ds-enter { from { opacity: 0; transform: translateY(0.35em); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } } @media (prefers-reduced-motion: reduce) { .ds-story-line { animation-duration: 0.01ms; animation-delay: 0ms; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Page Is the Stage",
+    "overview": "KanjiTales is a Massin stage page fused with Japanese materials. The whole page is one theatrical surface: washi paper as the ground, sumi ink as the actors, and a single vermilion voice that only speaks as stamps, hover, and focus. Tonight's story — a tiny kanji-validated tale — performs on it. The world explicitly refuses two easy defaults: the study-app dashboard (no cards, no progress widgets, no chrome) and decorative japonisme (Japan is present as material — ink, paper, hanko, stage-script language — not as ornament). The retired Y2K homepage world is the anti-reference.\n\nThe system has three typographic voices in strict roles: a heavy Shippori Mincho display that performs (roughened by a stamp-ink SVG filter, tilted a degree or two off true), a Courier typewriter caption that stage-manages (small, gray, bilingual asides and stage directions), and a calm Zen Kaku Gothic body that simply reads. Expression is concentrated in chrome, timing, and scale — the story text itself is the largest, calmest, most readable thing on the page.\n\nCopy is Japanese-first in a stage-script register: parenthetical stage directions （幕が上がる。）, theater vocabulary for actions and states (上演する, 新作, 検, 出演 CAST, 字幕), with lowercase English typewriter asides trailing after.",
+    "keyCharacteristics": [
+      "One column, one stage: everything happens on a single 760px washi surface with visible paper grain.",
+      "Ink hierarchy, not boxes: hairline rules and hard underlines carry all structure.",
+      "Vermilion is an event: it appears only as hanko stamps, hover, and focus — never at rest.",
+      "Rough ink as texture: one SVG turbulence filter distresses display type and stamps; nothing else is distressed.",
+      "Theatrical timing: sentences enter on staggered beats; the generation wait is staged, not spun."
+    ],
+    "rules": [
+      { "name": "The One Voice Rule", "body": "Vermilion speaks only as stamps, hover, and focus — never at rest. If a screen shows red without a stamp, a pointer, or a keyboard on it, the rule is broken.", "section": "colors" },
+      { "name": "The Ink-Only Rest Rule", "body": "At rest the page is exactly three tones of ink on paper (ink, faded ink, hairline gray). Every other color is a response to state.", "section": "colors" },
+      { "name": "The Rough Ink Rule", "body": "All distress comes from one source: the #kt-rough-ink SVG filter (fractalNoise, baseFrequency 0.55, 2 octaves, seed 7, displacement scale 2.6), defined once in the layout. It touches only performing display moments — masthead, story title, stamps, and the pressed button — never the story body, captions, or anything meant for sustained reading.", "section": "typography" },
+      { "name": "The Calm Story Rule", "body": "Expression lives in chrome, timing, and scale; the story text stays large, calm, and readable. The story is set in the display face but with the lighter 600 weight, generous 2.4 line-height, no filter, no rotation, and no motion beyond its one entrance.", "section": "typography" },
+      { "name": "The Flat Stage Rule", "body": "Nothing floats above the paper. If an element needs emphasis, change its scale, weight, or ink — never add a shadow or a layer.", "section": "elevation" },
+      { "name": "The No Boxes Rule", "body": "Containers are never drawn. No cards, no panels, no filled or outlined boxes around content — structure is hairline rules, hard underlines, and whitespace. The hanko stamp is the single sanctioned closed shape, and it is a seal, not a container.", "section": "shapes" },
+      { "name": "The Staggered Curtain Rule", "body": "Motion exists only at entrances, moves on theatrical beats (450ms per sentence), and always degrades to instant under reduced motion. Nothing loops except the waiting kana, and nothing moves while the audience is reading.", "section": "components" }
+    ],
+    "dos": [
+      "Do keep vermilion (#d7332a) stateful only — stamps, hover, focus, error tags — per the One Voice Rule.",
+      "Do draw all structure with rules and underlines: 2px ink for structural lines, 1px hairline gray for the quietest, 3px for selection and stamp borders.",
+      "Do run performing display type (masthead-scale headings, stamps) through filter: url(#kt-rough-ink) and tilt it −1° to −4°; the filter is defined once in layout.tsx.",
+      "Do write UI copy Japanese-first in the stage-script register — parenthetical stage directions in full-width （）, theater verbs (上演する, 開演), with lowercase English asides in the Courier caption voice.",
+      "Do stage every wait and entrance on the established beats: kt-enter with a 450ms per-line stagger for content, typed stage directions for long waits, and instant rendering under reduced motion.",
+      "Do keep the story itself the calmest, largest text on the page: 1.7rem / 2.4 line-height, weight 600, unfiltered, max-width bound to the 760px column."
+    ],
+    "donts": [
+      "Don't put content in boxes, cards, or panels — the retired Y2K panel world is the explicit anti-reference; the No Boxes Rule replaces it.",
+      "Don't use shadows, gradients (outside the radio's ink fill), rounded corners, or any color beyond the six tokens.",
+      "Don't apply the rough-ink filter or rotation to story text, captions, or anything read at length.",
+      "Don't show vermilion at rest, and don't introduce a second accent voice.",
+      "Don't decorate with japonisme imagery — Japan enters as material (paper, ink, hanko, script) only.",
+      "Don't loop or auto-play motion while a story is on stage; after the entrance beats, the page is still."
+    ]
+  }
+}

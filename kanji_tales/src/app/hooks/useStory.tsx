@@ -1,45 +1,69 @@
 "use client";
 
-import { GoogleGenAI } from "@google/genai";
+import { useCallback, useState } from "react";
 
-const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY as string;
-const ai = new GoogleGenAI({ apiKey });
+export interface StorySegment {
+  t: string;
+  f?: string;
+}
 
-export interface Sentence {
-  japanese: string;
-  english: string;
-  romaji: string;
+export interface Story {
+  title: string;
+  segments: StorySegment[];
+  vocab: { word: string; reading: string; meaning: string }[];
+  translation: string;
+  attempts: number;
+  violationsFixed: string[];
+  knownKanjiCount: number;
+  knownVocabCount: number;
+}
+
+export type Difficulty = "easy" | "normal" | "hard";
+
+export interface WaniKaniStatus {
+  connected: boolean;
+  reason?: string;
+  username?: string;
+  level?: number;
+  kanjiCount?: number;
+  vocabCount?: number;
 }
 
 export default function useStory() {
-  // Returns a function to fetch the story when called
-  const fetchStory = async (level: string = "N5"): Promise<Sentence> => {
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-pro",
-      contents: `Create one sentence in japanese in the ${level} level. Your respond has to be in json format, and with the following structure: { "japanese": "...", "english": "...", "romaji": "..."}`,
-      config: {
-        systemInstruction: `You are a helpful assistant that creates one sentence in Japanese, a translation in English, and a romaji version`,
-      },
-    });
+  const [story, setStory] = useState<Story | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-    const result = response.text?.replaceAll("```", "").replace("json", "");
-
+  const generate = useCallback(async (difficulty: Difficulty) => {
+    setLoading(true);
+    setError(null);
     try {
-      const responseText = result || "{}";
-      const sentence = JSON.parse(responseText);
-      return {
-        japanese: sentence.japanese || "N/A",
-        english: sentence.english || "N/A",
-        romaji: sentence.romaji || "N/A",
-      };
-    } catch (error) {
-      // Fallback if JSON parsing fails
-      return {
-        japanese: result || "No response available",
-        english: "Translation not available",
-        romaji: "Romaji not available",
-      };
+      const res = await fetch("/api/story", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ difficulty }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
+      setStory(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setLoading(false);
     }
-  };
-  return fetchStory;
+  }, []);
+
+  return { story, loading, error, generate };
+}
+
+export async function fetchWaniKaniStatus(): Promise<WaniKaniStatus> {
+  try {
+    const res = await fetch("/api/wanikani");
+    return await res.json();
+  } catch (err) {
+    return {
+      connected: false,
+      reason: err instanceof Error ? err.message : String(err),
+    };
+  }
 }

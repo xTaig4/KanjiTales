@@ -1,28 +1,229 @@
 @import "tailwindcss";
 
+/*
+  KanjiTales — Massin stage page, fused with Japanese materials.
+  The page is the stage: sumi ink on washi paper, one vermilion voice,
+  rough stamp-ink display type (heavy mincho), calm typewriter captions,
+  hairline rules instead of boxes, red hanko stamps as state.
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --border: #000000;
+  --paper: #faf9f5;
+  --ink: #111110;
+  --ink-soft: #55524b;
+  --gray-20: #e8e6df;
+  --voice-red: #d7332a; /* 朱 vermilion */
+  --voice-red-deep: #a3231c;
+  --font-display: "Shippori Mincho B1", "Hiragino Mincho ProN", serif;
+  --font-caption: "Courier New", "Zen Kaku Gothic New", monospace;
+  --font-jp: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic",
+    sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-border: var(--border);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --background: #ffffff;
-    --foreground: #000000;
-  }
+html {
+  background: var(--paper);
+  /* uncoated paper grain */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.07 0 0 0 0 0.06 0 0 0 0 0.05 0 0 0 0.035 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  font-family: var(--font-jp);
+}
+
+/* ---- voices ---- */
+.kt-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+
+.kt-caption {
+  font-family: var(--font-caption);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+}
+
+/* name-tag label: small caps over a hard underline, like ELLA / JONAH */
+.kt-tag {
+  font-family: var(--font-caption);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 2px;
+}
+
+/* ---- stamp ink: rough press texture on display type ---- */
+.kt-rough {
+  filter: url(#kt-rough-ink);
+}
+
+/* ---- hanko stamp ---- */
+.kt-stamp {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--voice-red);
+  border: 3px solid var(--voice-red);
+  line-height: 1;
+  padding: 0.3em 0.32em;
+  transform: rotate(-4deg);
+  filter: url(#kt-rough-ink);
+}
+
+/* ---- hairline rules ---- */
+.kt-rule {
+  border: 0;
+  border-top: 2px solid var(--ink);
+}
+.kt-rule--thin {
+  border-top-width: 1px;
+  border-color: var(--gray-20);
+}
+
+/* ---- primary button: hard black, stamp-edged when active ---- */
+button.kt-button {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.35em;
+  padding: 0.55em 1.6em 0.55em 1.95em; /* balance the tracking */
+  color: var(--paper);
+  background: var(--ink);
+  border: 2px solid var(--ink);
+}
+button.kt-button:hover:not(:disabled) {
+  background: var(--voice-red);
+  border-color: var(--voice-red-deep);
+}
+button.kt-button:active:not(:disabled) {
+  filter: url(#kt-rough-ink);
+}
+button.kt-button:disabled {
+  background: var(--ink-soft);
+  border-color: var(--ink-soft);
+}
+
+/* ---- the story: performing type ---- */
+.kt-story {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.7rem;
+  line-height: 2.4;
+  letter-spacing: 0.03em;
+}
+.kt-story rt {
+  font-family: var(--font-jp);
+  font-weight: 400;
+  font-size: 0.65rem;
+  color: var(--ink-soft);
+  letter-spacing: 0;
+}
+
+/* sentences enter in reading order with theatrical timing */
+.kt-line {
+  display: block;
+  animation: kt-enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--line) * 450ms);
+}
+@keyframes kt-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* ---- stage directions (loading) type out one by one ---- */
+.kt-direction {
+  display: block;
+  animation: kt-enter 0.5s ease-out both;
+}
+
+/* scattered letters faltering during the wait: size decays, drift grows */
+.kt-scatter span {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--ink-soft);
+  font-size: calc(4rem - var(--i) * 0.38rem);
+  animation: kt-drift 2.6s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * -0.4s);
+}
+@keyframes kt-drift {
+  from {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.35;
+  }
+  to {
+    transform: translateY(calc(-0.3em - var(--i) * 0.06em))
+      rotate(calc(4deg + var(--i) * 2deg));
+    opacity: 0.9;
+  }
+}
+
+/* ---- links: ink underline, red on hover ---- */
+main a,
+footer a,
+main button.kt-link {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+main a:hover,
+footer a:hover,
+main button.kt-link:hover {
+  color: var(--voice-red);
+}
+
+button.kt-link {
+  font-family: var(--font-caption);
+  font-size: 0.85rem;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid var(--voice-red);
+  outline-offset: 2px;
+}
+
+/* world-styled radio: ink ring, ink fill when cast */
+input.kt-radio {
+  appearance: none;
+  width: 1em;
+  height: 1em;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: baseline;
+  transform: translateY(0.12em);
+  cursor: pointer;
+}
+input.kt-radio:checked {
+  background: radial-gradient(
+    circle,
+    var(--ink) 0 38%,
+    var(--paper) 42% 55%,
+    var(--ink) 60% 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kt-line,
+  .kt-direction {
+    animation-duration: 0.01ms;
+    animation-delay: 0ms;
+  }
+  .kt-scatter span {
+    animation: none;
+  }
 }
